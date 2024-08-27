@@ -31,7 +31,10 @@ function App(): JSX.Element {
         onChange={ (e) => setNewTodoText(e.target.value) }
       />
       <button onClick={ handleAddTodo }>Add</button>
-      <TodoList todos={ todos } onDeleteTodo={ handleDeleteTodo } />
+      <TodoList
+        todos={ todos }
+        onDeleteTodo={ handleDeleteTodo }
+      />
     </div>
   );
 }

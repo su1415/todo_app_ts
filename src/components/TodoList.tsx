@@ -6,7 +6,11 @@ function TodoList({ todos, onDeleteTodo }: TodoListProps): JSX.Element {
   return (
     <ul>
       { todos.map(todo => (
-        <TodoItem key={ todo.id } todo={ todo } onDeleteTodo={ onDeleteTodo } />
+        <TodoItem
+          key={ todo.id }
+          todo={ todo }
+          onDeleteTodo={ onDeleteTodo }
+        />
       )) }
     </ul>
   );
