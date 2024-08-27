@@ -17,6 +17,10 @@ function App(): JSX.Element {
     }
   }
 
+  function handleDeleteTodo(id: number): void {
+    setTodos(todos.filter(todo => todo.id !== id));
+  }
+
   return (
     <div className="App">
       <h1>ToDo List</h1>
@@ -26,7 +30,7 @@ function App(): JSX.Element {
         onChange={ (e) => setNewTodoText(e.target.value) }
       />
       <button onClick={ handleAddTodo }>Add</button>
-      <TodoList todos={ todos } />
+      <TodoList todos={ todos } onDeleteTodo={ handleDeleteTodo } />
     </div>
   );
 }
