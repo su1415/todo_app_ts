@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { todos } from "./types";
 import TodoList from "./components/TodoList";
 
 function App(): JSX.Element {
-  const [todos, setTodos] = useState<todos>([
-    { id: 1, text: "sample1" },
-    { id: 2, text: "sample2" },
-  ]);
+  const [todos, setTodos] = useState<todos>(loadTodosFromLocalStorage());
 
   const [newTodoText, setNewTodoText] = useState<string>("");
+
+  useEffect(() => {
+    saveTodosToLocalStorage(todos);
+  }, [todos]);
 
   function handleAddTodo(): void {
     if (newTodoText.trim() !== "") {
@@ -33,6 +34,15 @@ function App(): JSX.Element {
       <TodoList todos={ todos } onDeleteTodo={ handleDeleteTodo } />
     </div>
   );
+}
+
+function loadTodosFromLocalStorage(): todos {
+  const savedTodos = localStorage.getItem("todos");
+  return savedTodos ? JSON.parse(savedTodos) : [];
+}
+
+function saveTodosToLocalStorage(todos: todos): void {
+  localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 export default App;
