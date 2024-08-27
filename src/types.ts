@@ -1,6 +1,7 @@
 export type todo = {
   id: number,
   text: string,
+  dueDate: string,
   completed: boolean,
 };
 

@@ -10,6 +10,11 @@ function TodoItem({ todo, onDeleteTodo, onToggleComplete }: TodoItemProps): JSX.
         onChange={ () => onToggleComplete(todo.id) }
       />
       { todo.text }
+      <input
+          type="date"
+          value={ todo.dueDate }
+          disabled={ true }
+        />
       <button onClick={ () => onDeleteTodo(todo.id) }>Delete</button>
     </li>
   );

@@ -6,15 +6,17 @@ function App(): JSX.Element {
   const [todos, setTodos] = useState<todos>(loadTodosFromLocalStorage());
 
   const [newTodoText, setNewTodoText] = useState<string>("");
+  const [newTodoDueDate, setNewTodoDueDate] = useState<string>("");
 
   useEffect(() => {
     saveTodosToLocalStorage(todos);
   }, [todos]);
 
   function handleAddTodo(): void {
-    if (newTodoText.trim() !== "") {
-      setTodos([...todos, { id: Date.now(), text: newTodoText, completed: false }]);
+    if (newTodoText.trim() !== "" && newTodoDueDate.trim() !== "") {
+      setTodos([...todos, { id: Date.now(), text: newTodoText, dueDate: newTodoDueDate, completed: false }]);
       setNewTodoText("");
+      setNewTodoDueDate("");
     }
   }
 
@@ -34,6 +36,12 @@ function App(): JSX.Element {
         value={ newTodoText }
         onChange={ (e) => setNewTodoText(e.target.value) }
       />
+      <input
+          type="date"
+          placeholder="Due Date"
+          value={ newTodoDueDate }
+          onChange={(e) => setNewTodoDueDate(e.target.value) }
+        />
       <button onClick={ handleAddTodo }>Add</button>
       <TodoList
         todos={ todos }
