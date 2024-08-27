@@ -2,7 +2,7 @@ import React from "react";
 import { TodoListProps } from "../types";
 import TodoItem from "./TodoItem";
 
-function TodoList({ todos, onDeleteTodo }: TodoListProps): JSX.Element {
+function TodoList({ todos, onDeleteTodo, onToggleComplete }: TodoListProps): JSX.Element {
   return (
     <ul>
       { todos.map(todo => (
@@ -10,6 +10,7 @@ function TodoList({ todos, onDeleteTodo }: TodoListProps): JSX.Element {
           key={ todo.id }
           todo={ todo }
           onDeleteTodo={ onDeleteTodo }
+          onToggleComplete={ onToggleComplete }
         />
       )) }
     </ul>

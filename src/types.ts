@@ -1,6 +1,7 @@
 export type todo = {
   id: number,
   text: string,
+  completed: boolean,
 };
 
 export type todos = todo[];
@@ -8,9 +9,11 @@ export type todos = todo[];
 export type TodoListProps = {
   todos: todos,
   onDeleteTodo: (id: number) => void,
+  onToggleComplete: (id: number) => void,
 };
 
 export type TodoItemProps = {
   todo: todo,
   onDeleteTodo: (id: number) => void,
+  onToggleComplete: (id: number) => void,
 };

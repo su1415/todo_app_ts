@@ -13,13 +13,17 @@ function App(): JSX.Element {
 
   function handleAddTodo(): void {
     if (newTodoText.trim() !== "") {
-      setTodos([...todos, { id: Date.now(), text: newTodoText }]);
+      setTodos([...todos, { id: Date.now(), text: newTodoText, completed: false }]);
       setNewTodoText("");
     }
   }
 
   function handleDeleteTodo(id: number): void {
     setTodos(todos.filter(todo => todo.id !== id));
+  }
+
+  function handleToggleComplete(id: number): void {
+    setTodos(todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo));
   }
 
   return (
@@ -34,6 +38,7 @@ function App(): JSX.Element {
       <TodoList
         todos={ todos }
         onDeleteTodo={ handleDeleteTodo }
+        onToggleComplete={ handleToggleComplete }
       />
     </div>
   );
