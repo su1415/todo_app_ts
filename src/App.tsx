@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { todos } from "./types";
+import { todo, todos } from "./types";
 import TodoList from "./components/TodoList";
 
 function App(): JSX.Element {
@@ -24,6 +24,10 @@ function App(): JSX.Element {
     setTodos(todos.filter(todo => todo.id !== id));
   }
 
+  function handleSaveEditTodo(editTodo: todo): void {
+    setTodos(todos.map((todo: todo) => todo.id === editTodo.id ? editTodo : todo));
+  }
+
   function handleToggleComplete(id: number): void {
     setTodos(todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo));
   }
@@ -37,15 +41,16 @@ function App(): JSX.Element {
         onChange={ (e) => setNewTodoText(e.target.value) }
       />
       <input
-          type="date"
-          placeholder="Due Date"
-          value={ newTodoDueDate }
-          onChange={(e) => setNewTodoDueDate(e.target.value) }
-        />
+        type="date"
+        placeholder="Due Date"
+        value={ newTodoDueDate }
+        onChange={(e) => setNewTodoDueDate(e.target.value) }
+      />
       <button onClick={ handleAddTodo }>Add</button>
       <TodoList
         todos={ todos }
         onDeleteTodo={ handleDeleteTodo }
+        onSaveEditTodo={ handleSaveEditTodo }
         onToggleComplete={ handleToggleComplete }
       />
     </div>
