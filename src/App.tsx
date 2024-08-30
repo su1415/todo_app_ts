@@ -104,12 +104,18 @@ function App(): JSX.Element {
           onChange={ (e) => setSearchTodoText(e.target.value) }
         />
       </div>
-      <TodoList
-        todos={ filteredTodos }
-        onDeleteTodo={ handleDeleteTodo }
-        onSaveEditTodo={ handleSaveEditTodo }
-        onToggleComplete={ handleToggleComplete }
-      />
+      { filteredTodos.length === 0 ? (
+        <div className="alert alert-info text-center">
+          <p>該当するTODOがありません</p>
+        </div>
+      ) : (
+        <TodoList
+          todos={ filteredTodos }
+          onDeleteTodo={ handleDeleteTodo }
+          onSaveEditTodo={ handleSaveEditTodo }
+          onToggleComplete={ handleToggleComplete }
+        />
+      ) }
     </div>
   );
 }
