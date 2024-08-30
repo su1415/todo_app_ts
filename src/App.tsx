@@ -7,6 +7,7 @@ function App(): JSX.Element {
   const [newTodoText, setNewTodoText] = useState<string>("");
   const [newTodoDueDate, setNewTodoDueDate] = useState<string>("");
   const [filter, setFilter] = useState<string>(loadFilterFromLocalStorage());
+  const [searchTodoText, setSearchTodoText] = useState<string>("");
 
   const filteredTodos: todos = getFilteredTodos(todos, filter);
 
@@ -46,6 +47,7 @@ function App(): JSX.Element {
     if (filter === "incompleted") {
       filterTodos = todos.filter(todo => !todo.completed);
     }
+    filterTodos = filterTodos.filter(todo => todo.text.includes(searchTodoText));
     return filterTodos;
   }
 
@@ -79,6 +81,13 @@ function App(): JSX.Element {
         { renderFilterButton("completed", "Completed") }
         { renderFilterButton("incompleted", "Incompleted") }
       </div>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search Todos"
+        value={ searchTodoText }
+        onChange={ (e) => setSearchTodoText(e.target.value) }
+      />
       <TodoList
         todos={ filteredTodos }
         onDeleteTodo={ handleDeleteTodo }
