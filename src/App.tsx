@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { todo, todos } from "./types";
 import TodoList from "./components/TodoList";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App(): JSX.Element {
   const [todos, setTodos] = useState<todos>(loadTodosFromLocalStorage());
@@ -58,7 +59,7 @@ function App(): JSX.Element {
   function renderFilterButton(filterType: string, label: string): JSX.Element {
     return (
       <button
-        className={ `${filter === filterType ? "active" : ""}` }
+        className={ `btn btn-outline-secondary ${filter === filterType ? "active" : ""}` }
         onClick={ () => setFilter(filterType) }>
         { label }
       </button>
@@ -66,32 +67,43 @@ function App(): JSX.Element {
   }
 
   return (
-    <div className="App">
-    <h1>ToDo List</h1>
-      <input
-        type="text"
-        value={ newTodoText }
-        onChange={ (e) => setNewTodoText(e.target.value) }
-      />
-      <input
-        type="date"
-        placeholder="Due Date"
-        value={ newTodoDueDate }
-        onChange={(e) => setNewTodoDueDate(e.target.value) }
-      />
-      <button onClick={ handleAddTodo }>Add</button>
-      <div>
+    <div className="App container mt-5">
+      <h1 className="text-center">ToDo List</h1>
+      <div className="input-group mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="New ToDo"
+          value={ newTodoText }
+          onChange={ (e) => setNewTodoText(e.target.value) }
+        />
+        <input
+          type="date"
+          className="form-control"
+          placeholder="Due Date"
+          value={ newTodoDueDate }
+          onChange={(e) => setNewTodoDueDate(e.target.value) }
+        />
+        <button
+          className="btn btn-primary"
+          onClick={ handleAddTodo }>
+          Add
+        </button>
+      </div>
+      <div className="btn-group mb-3">
         { renderFilterButton("all", "All") }
         { renderFilterButton("completed", "Completed") }
         { renderFilterButton("incompleted", "Incompleted") }
       </div>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Search Todos"
-        value={ searchTodoText }
-        onChange={ (e) => setSearchTodoText(e.target.value) }
-      />
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search Todos"
+          value={ searchTodoText }
+          onChange={ (e) => setSearchTodoText(e.target.value) }
+        />
+      </div>
       <TodoList
         todos={ filteredTodos }
         onDeleteTodo={ handleDeleteTodo }
@@ -108,7 +120,7 @@ function loadTodosFromLocalStorage(): todos {
 }
 
 function saveTodosToLocalStorage(todos: todos): void {
-  localStorage.setItem('todos', JSON.stringify(todos));
+  localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function loadFilterFromLocalStorage(): string {

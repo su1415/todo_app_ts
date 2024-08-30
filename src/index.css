@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.custom-checkbox {
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+}
+
+.list-group-item {
+  display: flex;
+  align-items: center;
+}
+
+.due-date {
+  margin-right: 0.5rem;
+}
+
+.fixed-width {
+  min-width: 70px;
+}

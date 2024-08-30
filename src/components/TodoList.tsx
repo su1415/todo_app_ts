@@ -4,7 +4,7 @@ import TodoItem from "./TodoItem";
 
 function TodoList({ todos, onDeleteTodo, onSaveEditTodo, onToggleComplete }: TodoListProps): JSX.Element {
   return (
-    <ul>
+    <ul className="list-group">
       { todos.map(todo => (
         <TodoItem
           key={ todo.id }
