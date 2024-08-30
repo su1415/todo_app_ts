@@ -4,6 +4,7 @@ import { TodoItemProps, todo } from "../types";
 function TodoItem({ todo, onDeleteTodo, onSaveEditTodo, onToggleComplete }: TodoItemProps): JSX.Element {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<todo>(todo);
+  const isOverdue = new Date(todo.dueDate) < new Date() && !todo.completed;
 
   function handleEditToggle(): void {
     setIsEditing(!isEditing);
@@ -16,7 +17,7 @@ function TodoItem({ todo, onDeleteTodo, onSaveEditTodo, onToggleComplete }: Todo
   };
 
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center">
+    <li className={`list-group-item d-flex justify-content-between align-items-center ${todo.completed ? "completed" : ""} ${isOverdue ? "overdue" : ""}`}>
       <div className="d-flex">
         <input
           type="checkbox"
@@ -35,9 +36,9 @@ function TodoItem({ todo, onDeleteTodo, onSaveEditTodo, onToggleComplete }: Todo
             className="form-control me-2 flex-grow-1"
           />
         ) : (
-          <>
+          <span className={ todo.completed ? "text-decoration-line-through" : "" }>
             { todo.text }
-          </>
+          </span>
         )}
       </div>
       <div className="d-flex">
