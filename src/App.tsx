@@ -4,13 +4,19 @@ import TodoList from "./components/TodoList";
 
 function App(): JSX.Element {
   const [todos, setTodos] = useState<todos>(loadTodosFromLocalStorage());
-
   const [newTodoText, setNewTodoText] = useState<string>("");
   const [newTodoDueDate, setNewTodoDueDate] = useState<string>("");
+  const [filter, setFilter] = useState<string>(loadFilterFromLocalStorage());
+
+  const filteredTodos: todos = getFilteredTodos(todos, filter);
 
   useEffect(() => {
     saveTodosToLocalStorage(todos);
   }, [todos]);
+
+  useEffect(() => {
+    saveFilterToLocalStorage(filter);
+  }, [filter]);
 
   function handleAddTodo(): void {
     if (newTodoText.trim() !== "" && newTodoDueDate.trim() !== "") {
@@ -32,9 +38,30 @@ function App(): JSX.Element {
     setTodos(todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo));
   }
 
+  function getFilteredTodos(todos: todos, filter: string): todos {
+    let filterTodos = todos;
+    if (filter === "completed") {
+      filterTodos = todos.filter(todo => todo.completed);
+    }
+    if (filter === "incompleted") {
+      filterTodos = todos.filter(todo => !todo.completed);
+    }
+    return filterTodos;
+  }
+
+  function renderFilterButton(filterType: string, label: string): JSX.Element {
+    return (
+      <button
+        className={ `${filter === filterType ? "active" : ""}` }
+        onClick={ () => setFilter(filterType) }>
+        { label }
+      </button>
+    );
+  }
+
   return (
     <div className="App">
-      <h1>ToDo List</h1>
+    <h1>ToDo List</h1>
       <input
         type="text"
         value={ newTodoText }
@@ -47,8 +74,13 @@ function App(): JSX.Element {
         onChange={(e) => setNewTodoDueDate(e.target.value) }
       />
       <button onClick={ handleAddTodo }>Add</button>
+      <div>
+        { renderFilterButton("all", "All") }
+        { renderFilterButton("completed", "Completed") }
+        { renderFilterButton("incompleted", "Incompleted") }
+      </div>
       <TodoList
-        todos={ todos }
+        todos={ filteredTodos }
         onDeleteTodo={ handleDeleteTodo }
         onSaveEditTodo={ handleSaveEditTodo }
         onToggleComplete={ handleToggleComplete }
@@ -64,6 +96,15 @@ function loadTodosFromLocalStorage(): todos {
 
 function saveTodosToLocalStorage(todos: todos): void {
   localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function loadFilterFromLocalStorage(): string {
+  const savedFilter = localStorage.getItem("filter");
+  return savedFilter ? savedFilter : "all";
+}
+
+function saveFilterToLocalStorage(filter: string): void {
+  localStorage.setItem("filter", filter);
 }
 
 export default App;
