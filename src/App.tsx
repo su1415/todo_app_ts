@@ -21,22 +21,26 @@ function App(): JSX.Element {
 
   function handleAddTodo(): void {
     if (newTodoText.trim() !== "" && newTodoDueDate.trim() !== "") {
-      setTodos([...todos, { id: Date.now(), text: newTodoText, dueDate: newTodoDueDate, completed: false }]);
+      const newTodos = [...todos, { id: Date.now(), text: newTodoText, dueDate: newTodoDueDate, completed: false }];
+      setTodos(sortTodosByDate(newTodos));
       setNewTodoText("");
       setNewTodoDueDate("");
     }
   }
 
   function handleDeleteTodo(id: number): void {
-    setTodos(todos.filter(todo => todo.id !== id));
+    const newTodos = todos.filter(todo => todo.id !== id);
+    setTodos(sortTodosByDate(newTodos));
   }
 
   function handleSaveEditTodo(editTodo: todo): void {
-    setTodos(todos.map((todo: todo) => todo.id === editTodo.id ? editTodo : todo));
+    const newTodos = todos.map((todo: todo) => todo.id === editTodo.id ? editTodo : todo);
+    setTodos(sortTodosByDate(newTodos));
   }
 
   function handleToggleComplete(id: number): void {
-    setTodos(todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo));
+    const newTodos = todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo);
+    setTodos(sortTodosByDate(newTodos));
   }
 
   function getFilteredTodos(todos: todos, filter: string): todos {
@@ -100,7 +104,7 @@ function App(): JSX.Element {
 
 function loadTodosFromLocalStorage(): todos {
   const savedTodos = localStorage.getItem("todos");
-  return savedTodos ? JSON.parse(savedTodos) : [];
+  return savedTodos ? sortTodosByDate(JSON.parse(savedTodos)) : [];
 }
 
 function saveTodosToLocalStorage(todos: todos): void {
@@ -115,5 +119,9 @@ function loadFilterFromLocalStorage(): string {
 function saveFilterToLocalStorage(filter: string): void {
   localStorage.setItem("filter", filter);
 }
+
+function sortTodosByDate(todos: todos): todos {
+  return todos.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
+};
 
 export default App;
